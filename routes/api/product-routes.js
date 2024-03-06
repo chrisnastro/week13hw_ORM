@@ -1,15 +1,34 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
-router.get('/', async (req, res) => {
-  try {
-    const products = await Product.findAll({
-      include: [{ model: Categoy }, { model: Tag }],
-    });
-    res.status(200).json(products);
-  } catch (err) {
-    res.status(500).json({ message: "Products not found!" });
-  }
+// router.get('/', async (req, res) => {
+//   try {
+//     const products = await Product.findAll({
+//       include: [{ model: Categoy }, { model: Tag }],
+//     });
+//     res.status(200).json(products);
+//   } catch (err) {
+//     res.status(500).json({ message: "Products not found!" });
+//   }
+// });
+
+router.get('/', (req, res) => {
+  Product.findAll({
+    attributes: ["id", "product_name", "price", "stock", "category_id"],
+    include: [{ model: Category, attributes: ["id", "category_name"],
+  },
+  {
+model: Tag,
+attributes: ["id", "tag_name"],
+  },
+],
+  })
+  .then((data) => {
+    res.json(data);
+  })
+  .catch((err) => {
+    res.status(400).json(err);
+  });
 });
 
 router.get('/:id', async (req, res) => {
