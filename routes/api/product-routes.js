@@ -44,7 +44,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   Product.create(req.body)
     .then((product) => {
       if (req.body.tagIds.length) {
@@ -98,7 +98,7 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    const deletedTags = await Product.destroy({ where: { id: req.params.id } });
+    const deleted = await Product.destroy({ where: { id: req.params.id } });
     !deleted
     ? res.status(404).json({ message: "Product ID not found!"})
     : res.status(200).json(deleted);
