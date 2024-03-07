@@ -1,17 +1,6 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
-// router.get('/', async (req, res) => {
-//   try {
-//     const products = await Product.findAll({
-//       include: [{ model: Categoy }, { model: Tag }],
-//     });
-//     res.status(200).json(products);
-//   } catch (err) {
-//     res.status(500).json({ message: "Products not found!" });
-//   }
-// });
-
 router.get('/', (req, res) => {
   Product.findAll({
     attributes: ["id", "product_name", "price", "stock", "category_id"],
